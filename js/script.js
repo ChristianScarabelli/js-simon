@@ -35,15 +35,38 @@ function countdownFrom30To0(n) {
         if (timeLeft < 0) {
             clearInterval(timer)  // Stoppo l'esecuzione di timer quando n < 0
             countdown.innerText = "Tempo scaduto!"
+            randomNumbersList.innerHTML = ''
         }
     }, 1000)
 }
-
-// Richiami la funzione per il countdown
-countdownFrom30To0(30)  // 30 secondi
-
+// Richiamo la funzione per il countdown
+countdownFrom30To0(10)  // 30 secondi
 
 
 
-// Genero i numeri
+// Creo una funzione che genera 5 numeri interi da 1 a 50
+function random5NumIntFrom1To50() {
+    let numbers = []
+    for (let i = 0; i < 5; i++) {
+        let num = Math.floor(Math.random() * 50) + 1
+        numbers.push(num)
+    }
+    return numbers
+}
+
+// Creo una funzione per inserire i numeri nella lista
+function appendNumbersToList(numbers) {
+    const randomNumbersList = document.getElementById('numbers-list');
+    randomNumbersList.innerHTML = '' // Pulisci la lista prima di aggiungere nuovi numeri
+
+    for (let i = 0; i < numbers.length; i++) {
+        let listItem = document.createElement('li')
+        listItem.innerText = numbers[i]
+        randomNumbersList.appendChild(listItem)
+    }
+}
+
+// Richiamo la funzione per aggiungere gli elementi alla lista
+const numbers = random5NumIntFrom1To50();
+appendNumbersToList(numbers)
 
