@@ -23,3 +23,27 @@ const form = document.getElementById('answers-form')  // form per inserire i num
 const formButton = document.querySelector('.btn.btn-primary.mt-2.d-block.mx-auto')  // form button
 const resultMessage = document.getElementById('message')  // p testo esito form
 
+
+// Creo una funzione per il countdown
+function countdownFrom30To0(n) {
+    let timeLeft = n // Secondi rimanenti
+
+    const timer = setInterval(() => {
+        countdown.innerText = timeLeft + " Secondi rimanenti"
+        timeLeft--  // decremento n di -1 alla volta
+
+        if (timeLeft < 0) {
+            clearInterval(timer)  // Stoppo l'esecuzione di timer quando n < 0
+            countdown.innerText = "Tempo scaduto!"
+        }
+    }, 1000)
+}
+
+// Richiami la funzione per il countdown
+countdownFrom30To0(30)  // 30 secondi
+
+
+
+
+// Genero i numeri
+
