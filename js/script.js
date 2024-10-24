@@ -36,13 +36,11 @@ function countdownFrom30To0(n) {
             clearInterval(timer)  // Stoppo l'esecuzione di timer quando n < 0
             countdown.innerText = "Tempo scaduto!"
             randomNumbersList.innerHTML = ''
+            countdownText.innerHTML = 'Inserisci i numeri che ricordi!'
+            form.className = 'd-block'
         }
     }, 1000)
 }
-// Richiamo la funzione per il countdown
-countdownFrom30To0(10)  // 30 secondi
-
-
 
 // Creo una funzione che genera 5 numeri interi da 1 a 50
 function random5NumIntFrom1To50() {
@@ -66,7 +64,17 @@ function appendNumbersToList(numbers) {
     }
 }
 
+// Creo una funzione che gestisce gli eventi quando il countdown è a 0
+function countdownAtZero() {
+    randomNumbersList.innerHTML = ''
+    countdownText.innerHTML = 'Inserisci i numeri che ricordi!'
+    form.className = 'd-block'
+}
+
+// Richiamo la funzione per il countdown
+countdownFrom30To0(5, countdownAtZero)  // 30 secondi
+
 // Richiamo la funzione per aggiungere gli elementi alla lista
-const numbers = random5NumIntFrom1To50();
+const numbers = random5NumIntFrom1To50()
 appendNumbersToList(numbers)
 
