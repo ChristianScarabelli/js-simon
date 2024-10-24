@@ -5,15 +5,6 @@ Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei num
 NOTA: non è importante l'ordine con cui l'utente inserisce i numeri, basta che ne indovini il più possibile.
 */
 
-// Generare 5 numeri random interi da 1 a 50
-// (allo stesso tempo) Far partire un countdown di 30 secondi
-// Passati 30 secondi
-//     - scompaiono i numeri
-//     - appaiono gli input
-// Tramite bottone di conferma, invio il form
-//     - il software dice quanti e quali numeri sono stati indovinati
-
-
 
 // DOM ELEMENTS
 const countdown = document.getElementById('countdown')  // div del countdown
@@ -24,8 +15,8 @@ const formButton = document.querySelector('.btn.btn-primary.mt-2.d-block.mx-auto
 const resultMessage = document.getElementById('message')  // p testo esito form
 
 
-// Creo una funzione per il countdown
-function countdownFrom30To0(n) {
+// Funzione per il countdown
+function countdownFrom30To0(n, callback) {
     let timeLeft = n // Secondi rimanenti
 
     const timer = setInterval(() => {
@@ -35,14 +26,12 @@ function countdownFrom30To0(n) {
         if (timeLeft < 0) {
             clearInterval(timer)  // Stoppo l'esecuzione di timer quando n < 0
             countdown.innerText = "Tempo scaduto!"
-            randomNumbersList.innerHTML = ''
-            countdownText.innerHTML = 'Inserisci i numeri che ricordi!'
-            form.className = 'd-block'
+            if (callback) callback()  // Chiamo il callback se esiste
         }
     }, 1000)
 }
 
-// Creo una funzione che genera 5 numeri interi da 1 a 50
+// Funzione che genera 5 numeri interi da 1 a 50
 function random5NumIntFrom1To50() {
     let numbers = []
     for (let i = 0; i < 5; i++) {
@@ -52,9 +41,9 @@ function random5NumIntFrom1To50() {
     return numbers
 }
 
-// Creo una funzione per inserire i numeri nella lista
+// Funzione per inserire i numeri nella lista
 function appendNumbersToList(numbers) {
-    const randomNumbersList = document.getElementById('numbers-list');
+    const randomNumbersList = document.getElementById('numbers-list')
     randomNumbersList.innerHTML = '' // Pulisci la lista prima di aggiungere nuovi numeri
 
     for (let i = 0; i < numbers.length; i++) {
@@ -64,17 +53,39 @@ function appendNumbersToList(numbers) {
     }
 }
 
-// Creo una funzione che gestisce gli eventi quando il countdown è a 0
+// Funzione che gestisce gli eventi quando il countdown è a 0
 function countdownAtZero() {
     randomNumbersList.innerHTML = ''
     countdownText.innerHTML = 'Inserisci i numeri che ricordi!'
-    form.className = 'd-block'
+    form.classList.remove('d-none')
+    form.classList.add('d-block')
 }
 
-// Richiamo la funzione per il countdown
+// Funzione per verificare i numeri inseriti dall'utente
+function checkUserNumbers(userNumbers, generatedNumbers) {
+    let correctNumbers = userNumbers.filter(num => generatedNumbers.includes(num))
+    return correctNumbers
+}
+
+
+// Gestisco l'invio del form
+form.addEventListener('submit', function (event) {
+    event.preventDefault()
+
+    const inputFields = document.querySelectorAll('#input-group input')  // Recupero gli input di input group
+    const userNumbers = Array.from(inputFields).map(input => parseInt(input.value, 10))
+    const correctNumbers = checkUserNumbers(userNumbers, generatedNumbers)
+
+    resultMessage.innerText = `Hai indovinato ${correctNumbers.length} numeri: ${correctNumbers.join(', ')}`
+})
+
+
+// INIZIALIZZO LE FUNZIONI
+// Countdown
 countdownFrom30To0(5, countdownAtZero)  // 30 secondi
 
-// Richiamo la funzione per aggiungere gli elementi alla lista
-const numbers = random5NumIntFrom1To50()
-appendNumbersToList(numbers)
+// Aggiungere gli elementi alla lista
+const generatedNumbers = random5NumIntFrom1To50()
+appendNumbersToList(generatedNumbers)
+
 
